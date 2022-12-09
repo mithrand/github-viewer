@@ -1,0 +1,19 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["airbnb", "airbnb-typescript", "prettier"],
+  "plugins": ["cypress"],
+  "env": {
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {},
+  "globals": {
+    "fetch": true,
+    "Iterator": true,
+    "Generator": true,
+    "browser": true
+  }
+}

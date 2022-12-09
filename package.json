@@ -1,0 +1,61 @@
+{
+  "name": "github-viewer",
+  "description": "This is a example of graphQL fetching data from github",
+  "author": "antonio munoz <antoniomunoz1784@gmail.com>",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">6"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "web-vitals": "^3.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.12",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "prettier": "^2.8.1",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+    "prettier": "prettier --write .",
+    "start": "react-scripts start",
+    "test:unit": "react-scripts test",
+    "test": "npm run lint && npm run typecheck && npm run test:unit",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
