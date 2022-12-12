@@ -1,9 +1,9 @@
 const repositories = [
   {
-    name: 'react',
+    name: 'The Original React',
     url: 'https://github.com/facebook/react',
-    stargazerCount: 199009,
-    forkCount: 41322,
+    stargazerCount: 100_000,
+    forkCount: 50_000,
     __typename: 'Repository',
   },
   {

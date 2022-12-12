@@ -1,4 +1,5 @@
 import React from 'react'
+import RepositoriesTable from './repositories-table'
 import useRepositories from './use-repositories'
 
 const Repositories = () => {
@@ -8,15 +9,7 @@ const Repositories = () => {
     return <div>Loading</div>
   }
 
-  return (
-    <ul aria-label="repositories">
-      {repositories.map((repo) => (
-        <li key={repo.url}>
-          {repo.name} - {repo.url} - {repo.forkCount} - {repo.stargazerCount}
-        </li>
-      ))}
-    </ul>
-  )
+  return <RepositoriesTable repositories={repositories} />
 }
 
 export default Repositories
