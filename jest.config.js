@@ -15,6 +15,7 @@ module.exports = {
     'index.ts',
     'stories.ts',
     'stories.tsx',
+    'reportWebVitals.ts',
   ],
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   coverageDirectory: '<rootDir>/coverage',

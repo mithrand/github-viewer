@@ -2,13 +2,14 @@ import React, { ReactNode } from 'react'
 import { createClient, Provider } from 'urql'
 import config from '../config'
 
-const client = createClient({
+export const client = createClient({
   url: config.graphqlUrl,
   fetchOptions: {
     headers: {
       authorization: `Bearer ${config.githubToken}`,
     },
   },
+  requestPolicy: 'cache-and-network',
 })
 
 const GitHubGraphQLProvider = ({ children }: { children: ReactNode }) => (
