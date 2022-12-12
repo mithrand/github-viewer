@@ -3,13 +3,19 @@
     "project": "./tsconfig.json"
   },
   "extends": ["airbnb", "airbnb-typescript", "prettier"],
-  "plugins": ["cypress"],
+  "plugins": [],
   "env": {
     "es6": true,
     "node": true,
     "jest": true
   },
-  "rules": {},
+  "rules": {
+    "no-restricted-exports": ["off"],
+    "react/function-component-definition": ["off", {
+      "namedComponents": "arrow-function",
+      "unnamedComponents": "arrow-function"
+    }]
+  },
   "globals": {
     "fetch": true,
     "Iterator": true,
