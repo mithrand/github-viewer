@@ -1,15 +1,14 @@
 import React from 'react'
+import { Container } from '@chakra-ui/react'
+
+import RepositorySearch from './repositories-search'
 import RepositoriesTable from './repositories-table'
-import useRepositories from './use-repositories'
 
-const Repositories = () => {
-  const repositories = useRepositories('react', 100)
-
-  if (!repositories) {
-    return <div>Loading</div>
-  }
-
-  return <RepositoriesTable repositories={repositories} />
-}
+const Repositories = () => (
+  <Container maxW="50%">
+    <RepositorySearch />
+    <RepositoriesTable />
+  </Container>
+)
 
 export default Repositories

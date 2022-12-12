@@ -1,5 +1,6 @@
 import { gql, useQuery } from 'urql'
-import { Repository } from './types'
+
+const defaultSearchTerm = 'react'
 
 const GET_REPOSITORIES = gql`
   query GetRepositories($query: String!, $first: Int!) {
@@ -27,17 +28,20 @@ type GetRepositoriesQuery = {
   }
 }
 
-const useRepositories = (query: string, first: number): Repository[] | null => {
-  const [{ data, error }] = useQuery<GetRepositoriesQuery>({
+const useRepositories = (query: string, first: number) => {
+  const [{ data, error, fetching }] = useQuery<GetRepositoriesQuery>({
     query: GET_REPOSITORIES,
-    variables: { query, first },
+    variables: { query: query || defaultSearchTerm, first },
   })
 
   if (error) {
     throw new Error(`GetRepositoriesQuery - ${error.message}`)
   }
 
-  return data?.search.nodes || null
+  return {
+    repositories: data?.search.nodes || [],
+    isFetching: fetching,
+  }
 }
 
 export default useRepositories

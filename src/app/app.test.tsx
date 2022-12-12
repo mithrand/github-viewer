@@ -7,15 +7,17 @@ import {
   waitFor,
   within,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import App from './app'
 import server from '../../test/server'
 
-const getLoading = () => screen.getByText(/loading/i)
-const queryLoading = () => screen.queryByText(/loading/i)
+const getLoading = () => screen.getByTestId('repository-skeleton-0')
+const queryLoading = () => screen.queryByTestId('repository-skeleton-0')
 const getRepositories = () => screen.queryByLabelText(/repositories/i)
 const getErrorMessage = () => screen.getByText(/there was an error/i)
 const getFirstRepository = () => screen.getByTestId('repository-0')
+const getSearchBox = () => screen.getByLabelText(/search/i)
 
 describe('Github viewwe', () => {
   it('Renders and fetch repositories', async () => {
@@ -48,6 +50,24 @@ describe('Github viewwe', () => {
       'href',
       'https://github.com/facebook/react',
     )
+  })
+
+  it('Searchs repository by query', async () => {
+    render(<App />)
+    await waitFor(() => expect(getRepositories()).toBeInTheDocument())
+    const searchBox = getSearchBox()
+    userEvent.type(searchBox, 'awesome{enter}')
+
+    await waitFor(() => expect(getLoading()).toBeInTheDocument())
+    await waitForElementToBeRemoved(queryLoading)
+
+    const firstRepository = getFirstRepository()
+    expect(firstRepository).toBeInTheDocument()
+    expect(
+      within(firstRepository).getByText('awesome-react'),
+    ).toBeInTheDocument()
+    expect(within(firstRepository).getByText('🍴 6,435')).toBeInTheDocument()
+    expect(within(firstRepository).getByText('🌟 52,745')).toBeInTheDocument()
   })
 
   it('Triggers error boundary when there is an error at fetching', async () => {

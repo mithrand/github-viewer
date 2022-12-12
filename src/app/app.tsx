@@ -2,17 +2,19 @@ import React from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import GitHubGraphQLProvider from '../api/github-graphql-provider'
-import Repositories from '../repositories/repositories'
+import Repositories, { RepositoryProvider } from '../repositories'
 import ErrorBoundary from './error-boundary'
 
 const App = () => (
-  <ChakraProvider>
-    <ErrorBoundary>
+  <ErrorBoundary>
+    <ChakraProvider>
       <GitHubGraphQLProvider>
-        <Repositories />
+        <RepositoryProvider>
+          <Repositories />
+        </RepositoryProvider>
       </GitHubGraphQLProvider>
-    </ErrorBoundary>
-  </ChakraProvider>
+    </ChakraProvider>
+  </ErrorBoundary>
 )
 
 export default App
