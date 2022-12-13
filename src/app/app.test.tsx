@@ -70,6 +70,23 @@ describe('Github viewwe', () => {
     expect(within(firstRepository).getByText('🌟 52,745')).toBeInTheDocument()
   })
 
+  it('Shows no repositor message when no repositories are found', async () => {
+    render(<App />)
+    await waitFor(() => expect(getRepositories()).toBeInTheDocument())
+    const searchBox = getSearchBox()
+    userEvent.type(searchBox, 'aaaaaaaaaaa{enter}')
+
+    await waitFor(() => expect(getLoading()).toBeInTheDocument())
+    await waitForElementToBeRemoved(queryLoading)
+
+    expect(screen.getByText(/no repositories are found/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        /please use the search box at the top to look for repositories/i,
+      ),
+    ).toBeInTheDocument()
+  })
+
   it('Triggers error boundary when there is an error at fetching', async () => {
     jest.spyOn(console, 'error')
     server.use(

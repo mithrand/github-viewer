@@ -1,10 +1,17 @@
 import { gql, useQuery } from 'urql'
+import { useRepositoriesState } from './repositories-provider'
 
 const defaultSearchTerm = 'react'
 
 const GET_REPOSITORIES = gql`
   query GetRepositories($query: String!, $first: Int!) {
     search(first: $first, type: REPOSITORY, query: $query) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
       nodes {
         ... on Repository {
           name
@@ -19,6 +26,12 @@ const GET_REPOSITORIES = gql`
 
 type GetRepositoriesQuery = {
   search: {
+    pageInfo: {
+      endCursor?: string
+      hasNextPage: boolean
+      hasPreviousPage: boolean
+      startCursor?: string
+    }
     nodes: Array<{
       name: string
       url: string
@@ -28,10 +41,11 @@ type GetRepositoriesQuery = {
   }
 }
 
-const useRepositories = (query: string, first: number) => {
+const useRepositories = () => {
+  const { query, pageSize } = useRepositoriesState()
   const [{ data, error, fetching }] = useQuery<GetRepositoriesQuery>({
     query: GET_REPOSITORIES,
-    variables: { query: query || defaultSearchTerm, first },
+    variables: { query: query || defaultSearchTerm, first: pageSize },
   })
 
   if (error) {

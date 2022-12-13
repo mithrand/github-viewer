@@ -12,29 +12,31 @@ import {
   Link,
   Text,
   Skeleton,
+  Center,
+  VStack,
 } from '@chakra-ui/react'
 import useRepositories from './use-repositories'
 import { useRepositoriesState } from './repositories-provider'
 import { Repository } from './types'
 
-const TableRow = ({
-  repository: { url, name, stargazerCount, forkCount },
-  index,
-}: {
-  repository: Repository
-  index: number
-}) => (
-  <Tr data-testid={`repository-${index}`}>
-    <Td aria-label="name">
-      <Link href={url}>{name}</Link>
-    </Td>
-    <Td aria-label="stars">
-      <Text>🌟 {stargazerCount.toLocaleString()}</Text>
-    </Td>
-    <Td aria-label="forks">
-      <Text>🍴 {forkCount.toLocaleString()}</Text>
-    </Td>
-  </Tr>
+type TableRowsProps = { repositories: Repository[] }
+
+const TableRows = ({ repositories }: TableRowsProps) => (
+  <>
+    {repositories.map(({ name, url, stargazerCount, forkCount }, index) => (
+      <Tr key={url} data-testid={`repository-${index}`}>
+        <Td aria-label="name">
+          <Link href={url}>{name}</Link>
+        </Td>
+        <Td aria-label="stars">
+          <Text>🌟 {stargazerCount.toLocaleString()}</Text>
+        </Td>
+        <Td aria-label="forks">
+          <Text>🍴 {forkCount.toLocaleString()}</Text>
+        </Td>
+      </Tr>
+    ))}
+  </>
 )
 
 const TableSkeleton = () => {
@@ -62,9 +64,34 @@ const TableSkeleton = () => {
   )
 }
 
+const TableEmpty = () => (
+  <Tr>
+    <Td aria-label="name" colSpan={3}>
+      <Center h="250px">
+        <VStack>
+          <Text>No repositories are found.</Text>
+          <Text>
+            Please use the search box at the top to look for repositories
+          </Text>
+        </VStack>
+      </Center>
+    </Td>
+  </Tr>
+)
+
 const RepositoriesTable = () => {
-  const { query, pageSize } = useRepositoriesState()
-  const { repositories, isFetching } = useRepositories(query, pageSize)
+  const { repositories, isFetching } = useRepositories()
+
+  const getContent = () => {
+    if (isFetching) {
+      return <TableSkeleton />
+    }
+    if (repositories.length === 0) {
+      return <TableEmpty />
+    }
+
+    return <TableRows repositories={repositories} />
+  }
 
   return (
     <TableContainer aria-label="repositories">
@@ -77,19 +104,7 @@ const RepositoriesTable = () => {
             <Th isNumeric> Forks</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {isFetching ? (
-            <TableSkeleton />
-          ) : (
-            repositories.map((repository, index) => (
-              <TableRow
-                key={repository.url}
-                repository={repository}
-                index={index}
-              />
-            ))
-          )}
-        </Tbody>
+        <Tbody>{getContent()}</Tbody>
         <Tfoot>
           <Tr>
             <Th>Name</Th>
