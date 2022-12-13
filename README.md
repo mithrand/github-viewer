@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Envirtoment
+
+Before starting the project ensure you have created a .env file with a valid github token. A example .env file can be found in `./env.example`
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -18,6 +22,10 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm test:e2e`
+
+It create a new image and launch a dockerized version of the app, then it runs the e2e test against it.
 
 ### `npm run build`
 
