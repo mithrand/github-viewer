@@ -3,7 +3,7 @@ import { Input, Button, Flex, Spacer } from '@chakra-ui/react'
 import { useRepositoriesActions } from './repositories-provider'
 
 const RepositorySearch = () => {
-  const { setQuery } = useRepositoriesActions()
+  const { changeQuery } = useRepositoriesActions()
   const [searchText, setSearchText] = useState('')
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -11,8 +11,7 @@ const RepositorySearch = () => {
     e.stopPropagation()
 
     if (searchText !== '') {
-      setSearchText('')
-      setQuery(searchText)
+      changeQuery(searchText)
     }
   }
 

@@ -15,7 +15,7 @@ import {
   Center,
   VStack,
 } from '@chakra-ui/react'
-import useRepositories from './use-repositories'
+import useRepositoriesQuery from './use-repositories-query'
 import { useRepositoriesState } from './repositories-provider'
 import { Repository } from './types'
 
@@ -24,7 +24,7 @@ type TableRowsProps = { repositories: Repository[] }
 const TableRows = ({ repositories }: TableRowsProps) => (
   <>
     {repositories.map(({ name, url, stargazerCount, forkCount }, index) => (
-      <Tr key={url} data-testid={`repository-${index}`}>
+      <Tr aria-label="repository" key={url} data-testid={`repository-${index}`}>
         <Td aria-label="name">
           <Link href={url}>{name}</Link>
         </Td>
@@ -80,7 +80,7 @@ const TableEmpty = () => (
 )
 
 const RepositoriesTable = () => {
-  const { repositories, isFetching } = useRepositories()
+  const { repositories, isFetching } = useRepositoriesQuery()
 
   const getContent = () => {
     if (isFetching) {

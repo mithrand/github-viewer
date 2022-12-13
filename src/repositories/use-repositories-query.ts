@@ -3,9 +3,29 @@ import { useRepositoriesState } from './repositories-provider'
 
 const defaultSearchTerm = 'react'
 
+const emptyPageInfo = {
+  endCursor: null,
+  hasNextPage: false,
+  hasPreviousPage: false,
+  startCursor: null,
+}
+
 const GET_REPOSITORIES = gql`
-  query GetRepositories($query: String!, $first: Int!) {
-    search(first: $first, type: REPOSITORY, query: $query) {
+  query GetRepositories(
+    $query: String!
+    $first: Int
+    $last: Int
+    $before: String
+    $after: String
+  ) {
+    search(
+      type: REPOSITORY
+      query: $query
+      first: $first
+      last: $last
+      before: $before
+      after: $after
+    ) {
       pageInfo {
         endCursor
         hasNextPage
@@ -14,6 +34,7 @@ const GET_REPOSITORIES = gql`
       }
       nodes {
         ... on Repository {
+          id
           name
           url
           stargazerCount
@@ -24,13 +45,13 @@ const GET_REPOSITORIES = gql`
   }
 `
 
-type GetRepositoriesQuery = {
+export type GetRepositoriesQuery = {
   search: {
     pageInfo: {
-      endCursor?: string
+      endCursor: string | null
       hasNextPage: boolean
       hasPreviousPage: boolean
-      startCursor?: string
+      startCursor: string | null
     }
     nodes: Array<{
       name: string
@@ -41,11 +62,17 @@ type GetRepositoriesQuery = {
   }
 }
 
-const useRepositories = () => {
-  const { query, pageSize } = useRepositoriesState()
+const useRepositoriesQuery = () => {
+  const { query, last, first, before, after } = useRepositoriesState()
   const [{ data, error, fetching }] = useQuery<GetRepositoriesQuery>({
     query: GET_REPOSITORIES,
-    variables: { query: query || defaultSearchTerm, first: pageSize },
+    variables: {
+      query: query || defaultSearchTerm,
+      first,
+      last,
+      before,
+      after,
+    },
   })
 
   if (error) {
@@ -53,9 +80,10 @@ const useRepositories = () => {
   }
 
   return {
+    pageInfo: data?.search.pageInfo || emptyPageInfo,
     repositories: data?.search.nodes || [],
     isFetching: fetching,
   }
 }
 
-export default useRepositories
+export default useRepositoriesQuery

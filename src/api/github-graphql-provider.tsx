@@ -9,7 +9,6 @@ export const client = createClient({
       authorization: `Bearer ${config.githubToken}`,
     },
   },
-  requestPolicy: 'cache-and-network',
 })
 
 const GitHubGraphQLProvider = ({ children }: { children: ReactNode }) => (

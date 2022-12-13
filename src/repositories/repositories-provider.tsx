@@ -3,32 +3,44 @@ import React, {
   ReactNode,
   useContext,
   useMemo,
-  useState,
+  useReducer,
 } from 'react'
+import {
+  changePageSize,
+  changeQuery,
+  moveFirst,
+  moveNext,
+  movePrevious,
+  RepositoriesReducer,
+} from './repositories-reducer'
+import { State } from './types'
 
 const noop = () => {}
 
-type State = {
-  query: string
-  pageSize: number
-  currentPage: number
+const initialState: State = {
+  query: 'react',
+  before: null,
+  after: null,
+  first: 10,
+  last: null,
+  pageSize: 10,
 }
 
-const StateContext = createContext<State>({
-  query: 'react',
-  pageSize: 100,
-  currentPage: 0,
-})
+const StateContext = createContext<State>(initialState)
 
 type Actions = {
-  setQuery(query: string): void
-  setPageSize(pageSize: number): void
-  setCurrentPage(currentPage: number): void
+  changeQuery(query: string): void
+  changePageSize(pageSize: number): void
+  moveFirst(): void
+  moveNext(nextCursor: string): void
+  movePrevious(previousCursor: string): void
 }
 const ActionsContext = createContext<Actions>({
-  setQuery: noop,
-  setPageSize: noop,
-  setCurrentPage: noop,
+  changeQuery: noop,
+  changePageSize: noop,
+  moveFirst: noop,
+  moveNext: noop,
+  movePrevious: noop,
 })
 
 type Props = {
@@ -36,21 +48,18 @@ type Props = {
 }
 
 export const RepositoryProvider = ({ children }: Props) => {
-  const [query, setQuery] = useState('')
-  const [pageSize, setPageSize] = useState(100)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [state, dispatch] = useReducer(RepositoriesReducer, initialState)
 
-  const state = useMemo(
-    () => ({ query, pageSize, currentPage }),
-    [query, pageSize, currentPage],
-  )
   const actions = useMemo(
     () => ({
-      setQuery,
-      setPageSize,
-      setCurrentPage,
+      changeQuery: (query: string) => dispatch(changeQuery(query)),
+      changePageSize: (pageSize: number) => dispatch(changePageSize(pageSize)),
+      moveFirst: () => dispatch(moveFirst()),
+      moveNext: (nextCursor: string) => dispatch(moveNext(nextCursor)),
+      movePrevious: (previousCursor: string) =>
+        dispatch(movePrevious(previousCursor)),
     }),
-    [],
+    [dispatch],
   )
 
   return (
