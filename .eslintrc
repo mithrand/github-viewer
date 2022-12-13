@@ -3,7 +3,7 @@
     "project": "./tsconfig.json"
   },
   "extends": ["airbnb", "airbnb-typescript", "prettier"],
-  "plugins": [],
+  "plugins": ["cypress"],
   "env": {
     "es6": true,
     "node": true,

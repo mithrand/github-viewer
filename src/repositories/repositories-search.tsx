@@ -19,6 +19,7 @@ const RepositorySearch = () => {
     <form onSubmit={handleSubmit}>
       <Flex minWidth="max-content" alignItems="center" gap="2">
         <Input
+          type="text"
           aria-label="search"
           placeholder="enter your search term for example react"
           autoFocus
