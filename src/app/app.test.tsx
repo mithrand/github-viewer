@@ -92,7 +92,9 @@ describe('Github viewer', () => {
   })
 
   it('Triggers error boundary when there is an error at fetching', async () => {
-    jest.spyOn(console, 'error')
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+
     server.use(
       graphql.query('GetRepositories', (req, res, ctx) => res(ctx.status(500))),
     )
@@ -104,6 +106,7 @@ describe('Github viewer', () => {
 
     await waitFor(() => expect(getErrorMessage()).toBeInTheDocument())
     expect(console.error).toHaveBeenCalled()
+    expect(console.warn).toHaveBeenCalled()
   })
 
   it('Changes number of reports per page when change page size', async () => {

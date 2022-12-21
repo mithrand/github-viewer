@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Before starting the project ensure you have created a .env file with a valid github token. A example .env file can be found in `./env.example`
 
+### Pre requisites
+
+App is designed to run on node version 18 or higher with npm version 8.
+
+if you got nvm install you can use `nvm use` to set your proper node version for this project.
+
 ## Available Scripts
 
 In the project directory, you can run:
