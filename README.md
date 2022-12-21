@@ -12,6 +12,10 @@ App is designed to run on node version 18 or higher with npm version 8.
 
 if you got nvm install you can use `nvm use` to set your proper node version for this project.
 
+### Contributions
+
+Create a PR against main, test and build will run against Pr to ensure nothing breaks.
+
 ## Available Scripts
 
 In the project directory, you can run:
