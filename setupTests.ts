@@ -15,5 +15,9 @@ beforeAll(() =>
   }),
 )
 
-afterEach(() => server.resetHandlers())
+afterEach(() => {
+  server.resetHandlers()
+  jest.clearAllMocks()
+})
+
 afterAll(() => server.close())
